@@ -1,9 +1,9 @@
 # 面向对象
 # 声明
 class File:
-    name = 'f1'  # 共有财产
+    # name = 'f1'  # 共有财产
 
-    def __int__(self):
+    def __init__(self):
         self.name = 'f1'  # 私有财产
         self.create_time = 'today'
 
