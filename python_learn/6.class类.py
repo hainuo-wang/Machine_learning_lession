@@ -1,10 +1,10 @@
 # 面向对象
 # 声明
 class File:
-    # name = 'f1'  # 共有财产
+    # name = 'f1'  # 类属性
 
-    def __init__(self):
-        self.name = 'f1'  # 私有财产
+    def __init__(self):  # 实例属性
+        self.name = 'f1'
         self.create_time = 'today'
 
     def getdata(self):
