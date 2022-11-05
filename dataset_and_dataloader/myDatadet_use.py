@@ -1,7 +1,6 @@
 import torchvision.transforms
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-
 from read_data import read_split_data
 from MyDataset import MyDataSet
 
