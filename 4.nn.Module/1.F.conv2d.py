@@ -15,7 +15,7 @@ kernel = torch.tensor([
     [0, 1, 0],
     [2, 1, 0]
 ])
-ipt = torch.reshape(ipt, (1, 1, 5, 5))
+ipt = torch.reshape(ipt, (1, 1, 5, 5))  # (batch, channel, h, w)
 kernel = torch.reshape(kernel, (1, 1, 3, 3))
 result = F.conv2d(ipt, kernel)
 print(result)
