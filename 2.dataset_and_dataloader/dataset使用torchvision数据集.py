@@ -21,6 +21,6 @@ test_loader = DataLoader(test_dataset, batch_size=64)
 
 # tensorboard使用方法：复制writer = SummaryWriter('log1')中log1的绝对地址，然后
 # 在终端（terminal）输入：tensorboard --logdir=绝对地址
-# 比如我这里就是：tensorboard --logdir=D:\project\pycharm\Machine_learning_lession\dataset_and_dataloader\log1
+# 比如我这里就是：tensorboard --logdir=D:\project\pycharm\Machine_learning_lession\2.dataset_and_dataloader\log1
 # 然后回车，点击有6006的网址即可进入tensorboard界面
 
