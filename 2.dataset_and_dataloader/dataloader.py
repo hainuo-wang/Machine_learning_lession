@@ -1,9 +1,8 @@
 import torchvision
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-
-from read_data import read_split_data
-from MyDataset import MyDataSet
+from utils.read_data import read_split_data
+from utils.MyDataset import MyDataSet
 
 train_images_path, train_images_label, val_images_path, val_images_label = read_split_data('hymenoptera_data')
 print(train_images_label[0])

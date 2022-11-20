@@ -1,6 +1,6 @@
 import torchvision
-from tensorboardX import SummaryWriter
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
 
 train_dataset = torchvision.datasets.CIFAR10('CIFAR10', train=True,
                                              transform=torchvision.transforms.ToTensor(), download=True)

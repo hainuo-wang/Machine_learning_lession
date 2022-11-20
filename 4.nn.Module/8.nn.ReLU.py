@@ -7,6 +7,7 @@ ipt = torch.tensor([[1, -0.5],
 ipt = torch.reshape(ipt, (-1, 1, 2, 2))
 print(ipt.shape)
 
+
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
