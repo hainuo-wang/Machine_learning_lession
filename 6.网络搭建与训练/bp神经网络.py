@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-xy = np.loadtxt('bp神经网络.txt', delimiter='	', dtype=np.float32)
+xy = np.loadtxt('../data/bp神经网络.txt', delimiter='	', dtype=np.float32)
 x_data = torch.from_numpy(xy[:, :-1])
 y_data = torch.from_numpy(xy[:, [-1]])
 mean, std = torch.mean(x_data), torch.std(x_data)

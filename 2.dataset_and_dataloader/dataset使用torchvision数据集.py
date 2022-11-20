@@ -2,9 +2,9 @@ import torchvision
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
-train_dataset = torchvision.datasets.CIFAR10('CIFAR10', train=True,
+train_dataset = torchvision.datasets.CIFAR10('../data/CIFAR10', train=True,
                                              transform=torchvision.transforms.ToTensor(), download=True)
-test_dataset = torchvision.datasets.CIFAR10('CIFAR10', train=False,
+test_dataset = torchvision.datasets.CIFAR10('../data/CIFAR10', train=False,
                                             transform=torchvision.transforms.ToTensor(), download=True)
 print(test_dataset[0])
 img, label = test_dataset[0]

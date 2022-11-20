@@ -10,7 +10,7 @@ if os.path.exists(logs_path):
     shutil.rmtree(logs_path)
 writer = SummaryWriter(logs_path)
 
-path = '../2.dataset_and_dataloader/hymenoptera_data/bees/16838648_415acd9e3f.jpg'
+path = '../data/hymenoptera_data/bees/16838648_415acd9e3f.jpg'
 img = Image.open(path)
 print(img)
 # img.show()

@@ -4,9 +4,9 @@ from torch.nn import Flatten
 from torch.utils.data import DataLoader
 
 # 加载
-train_dataset = torchvision.datasets.CIFAR10('../2.dataset_and_dataloader/CIFAR10', train=True,
+train_dataset = torchvision.datasets.CIFAR10('../data/CIFAR10', train=True,
                                              transform=torchvision.transforms.ToTensor(), download=True)
-test_dataset = torchvision.datasets.CIFAR10('../2.dataset_and_dataloader/CIFAR10', train=False,
+test_dataset = torchvision.datasets.CIFAR10('../data/CIFAR10', train=False,
                                             transform=torchvision.transforms.ToTensor(), download=True)
 # 打包
 train_loader = DataLoader(train_dataset, batch_size=64)

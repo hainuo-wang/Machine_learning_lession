@@ -1,7 +1,7 @@
 from PIL import Image
 from torchvision import transforms
 
-path = '../2.dataset_and_dataloader/hymenoptera_data/bees/16838648_415acd9e3f.jpg'
+path = '../data/hymenoptera_data/bees/16838648_415acd9e3f.jpg'
 with open(path, 'rb') as f:
     img = Image.open(f)
     img_parse = img.convert('RGB')
