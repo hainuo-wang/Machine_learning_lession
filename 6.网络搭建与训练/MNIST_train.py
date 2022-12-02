@@ -33,7 +33,7 @@ class Net(nn.Module):
         self.pool3 = nn.MaxPool2d(kernel_size=2)
         self.relu = nn.ReLU()
         self.flt = nn.Flatten()
-        self.fc1 = nn.Linear(in_features=128 * 3 * 3, out_features=625)
+        self.fc1 = nn.Linear(in_features=1152, out_features=625)
         self.fc2 = nn.Linear(in_features=625, out_features=10)
 
     def forward(self, x):

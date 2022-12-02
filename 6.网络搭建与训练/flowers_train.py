@@ -5,43 +5,47 @@ import torchvision
 from torch import nn
 from tqdm import tqdm
 from torch.utils.data import DataLoader
+from utils.MyDataset import MyDataSet
+from utils.read_data import read_split_data
 
 # 定义训练设备
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # 网络、损失函数，数据
-# 加载数据集
-train_dataset = torchvision.datasets.CIFAR10('../data/CIFAR10', train=True,
-                                             transform=torchvision.transforms.ToTensor(), download=True)
-test_dataset = torchvision.datasets.CIFAR10('../data/CIFAR10', train=False,
-                                            transform=torchvision.transforms.ToTensor(), download=True)
-# 打包
+train_images_path, train_images_label, val_images_path, val_images_label = read_split_data('../data/flowers')
+transform = torchvision.transforms.Compose([
+    torchvision.transforms.Resize(256),
+    torchvision.transforms.CenterCrop(225),
+    torchvision.transforms.ToTensor(),
+    torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                     std=[0.229, 0.224, 0.225])
+])
+train_dataset = MyDataSet(train_images_path, train_images_label, transform=transform)  # 加载数据集（单个的图片以及标签）
+val_dataset = MyDataSet(val_images_path, val_images_label, transform=transform)
 train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=True)
+test_dataloader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 
 # 构建网络
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=5, stride=1, padding=2)
-        self.maxpool1 = nn.MaxPool2d(kernel_size=2)
-        self.conv2 = nn.Conv2d(in_channels=32, out_channels=32, kernel_size=5, stride=1, padding=2)
-        self.maxpool2 = nn.MaxPool2d(kernel_size=2)
-        self.conv3 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=5, stride=1, padding=2)
-        self.maxpool3 = nn.MaxPool2d(kernel_size=2)
-        self.flatten = nn.Flatten()
-        self.linear1 = nn.Linear(in_features=64 * 4 * 4, out_features=64)
-        self.linear2 = nn.Linear(in_features=64, out_features=10)  # 分类器
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, stride=1, padding=1)
+        self.pool1 = nn.MaxPool2d(kernel_size=2)
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.pool2 = nn.MaxPool2d(kernel_size=2)
+        self.conv3 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.pool3 = nn.MaxPool2d(kernel_size=2)
+        self.relu = nn.ReLU()
+        self.flt = nn.Flatten()
+        self.fc1 = nn.Linear(in_features=100352, out_features=625)
+        self.fc2 = nn.Linear(in_features=625, out_features=5)
 
     def forward(self, x):
-        x = self.conv1(x)
-        x = self.maxpool1(x)
-        x = self.conv2(x)
-        x = self.maxpool2(x)
-        x = self.conv3(x)
-        x = self.maxpool3(x)
-        x = self.flatten(x)
-        x = self.linear1(x)
-        x = self.linear2(x)
+        x = self.pool1(self.relu(self.conv1(x)))
+        x = self.pool2(self.relu(self.conv2(x)))
+        x = self.pool3(self.relu(self.conv3(x)))
+        x = self.flt(x)
+        x = self.relu(self.fc1(x))
+        x = self.fc2(x)
         return x
 
 
@@ -59,7 +63,7 @@ optimizer = torch.optim.SGD(params=net.parameters(), lr=learning_rate)  # lr是�
 total_train_step = 0  # 记录训练次数
 total_test_step = 0  # 记录测试（验证）次数
 running_loss = 0  # 记录整体的loss
-epochs = 5  # 训练轮数
+epochs = 10  # 训练轮数
 accuracy = []  # 用来记录准确率画图用
 
 for epoch in range(epochs):  # 训练轮数
@@ -100,10 +104,13 @@ for epoch in range(epochs):  # 训练轮数
             total_acc += (pre == targets).sum().item()  # 记录整体上的准确的数量，pre == targets判断是否正确，正确是1，不正确是0
     accuracy.append(100 * (total_acc / total_targets_num))  # 用来记录准确率画图用
     print("Accuracy on test set:{:.2f}%".format(100 * (total_acc / total_targets_num)))
+    # if epoch % 10 == 0:
+    torch.save(net.state_dict(), "weights/model-{}.pth".format(epoch))
 plt.figure(figsize=(8, 6))  # 定义图及大小
-plt.title("CIFAR10")  # 标题
+plt.title("flowers")  # 标题
 plt.xlabel("epoch")  # x坐标轴
 plt.ylabel("accuracy")  # y坐标轴
 plt.grid(visible=True)  # 显示网格
 plt.plot(range(epochs), accuracy)  # 画图
 plt.show()  # 展示
+

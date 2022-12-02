@@ -22,7 +22,7 @@ def read_split_data(root: str, val_rate: float = 0.2):
     # json.dumps将一个Python数据结构转换为JSON
     # indent = 4，缩进4个空格
     json_str = json.dumps(dict((val, key) for key, val in class_indices.items()), indent=4)
-    with open('../2.dataset_and_dataloader/class_indices.json', 'w') as json_file:
+    with open('class_indices.json', 'w') as json_file:
         json_file.write(json_str)
 
     train_images_path = []  # 存储训练集的所有图片路径

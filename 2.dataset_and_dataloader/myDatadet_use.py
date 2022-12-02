@@ -4,7 +4,7 @@ from torch.utils.tensorboard import SummaryWriter
 from utils.read_data import read_split_data
 from utils.MyDataset import MyDataSet
 
-train_images_path, train_images_label, val_images_path, val_images_label = read_split_data('hymenoptera_data')
+train_images_path, train_images_label, val_images_path, val_images_label = read_split_data('../data/hymenoptera_data')
 # print(train_images_label[0])
 transform = torchvision.transforms.ToTensor()
 train_dataset = MyDataSet(train_images_path, train_images_label, transform=transform)  # 加载数据集（单个的图片以及标签）

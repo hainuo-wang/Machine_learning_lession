@@ -4,34 +4,24 @@ from sklearn import preprocessing
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.model_selection import train_test_split
 
-xy = np.loadtxt('Real estate valuation data set.txt', delimiter='	', dtype=np.float32)
+# 数据读取
+xy = np.loadtxt('../data/Real estate valuation data set.txt', delimiter='	', dtype=np.float32)
 x_data = torch.from_numpy(xy[:, :-1])
 y_data = torch.from_numpy(xy[:, [-1]])
+# 归一化
 mean, std = torch.mean(x_data), torch.std(x_data)
 x_data = (x_data - mean) / std
 mean, std = torch.mean(y_data), torch.std(y_data)
 y_data = (y_data - mean) / std
+# 标准化
 x_data = torch.nn.functional.normalize(x_data, dim=0)
 y_data = torch.nn.functional.normalize(y_data, dim=0)
-
-# print(x_data.shape, y_data.shape)
-#
+# 数据集分割
 x_train, x_test = train_test_split(x_data, test_size=0.2)
 y_train, y_test = train_test_split(y_data, test_size=0.2)
 
 
-# min_max_scaler = preprocessing.MinMaxScaler()
-# x_data = min_max_scaler.fit_transform(x_data)
-# y_data = min_max_scaler.fit_transform(y_data)
-# x_data = torch.FloatTensor(x_data)
-# y_data = torch.FloatTensor(y_data)
-# x_data = torch.nn.functional.normalize(x_data, dim=0)
-# y_data = torch.nn.functional.normalize(y_data, dim=0)
-
-# print(x_train.shape, y_train.shape, x_test.shape, y_test.shape)
-# exit()
-
-
+# 网络定义
 class Model(torch.nn.Module):
     def __init__(self):
         super(Model, self).__init__()
@@ -47,6 +37,7 @@ class Model(torch.nn.Module):
         return x
 
 
+# 实例化
 model = Model()
 criterion = torch.nn.BCELoss(size_average=True)  # 损失函数
 optimizer = torch.optim.SGD(model.parameters(), lr=0.1)  # 优化函数，随机梯度递减
